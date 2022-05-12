@@ -37,7 +37,9 @@ jobs:
         if [ $KERNEL = "4.4" ] ; then
         git clone --depth=1 https://github.com/MeIsReallyBa/padavan-4.4.git /opt/rt-n56u
         else
-        git clone --depth=1 https://github.com/skylego/rt-n56u.git /opt/rt-n56u
+        git clone --depth=1 https://github.com/keke1023/padavan.git /opt/rt-n56u
+        rm /opt/rt-n56u/trunk/versions.inc
+        wget -P /opt/rt-n56u/trunk/ https://raw.githubusercontent.com/vb1980/Padavan-KVR/main/trunk/versions.inc
         fi
         cd /opt/rt-n56u/toolchain-mipsel
         sh dl_toolchain.sh
@@ -48,6 +50,9 @@ jobs:
         KERNEL: 3.4
       run: |
         cd /opt/rt-n56u/trunk
+        clock=`echo "obase=16 ; ibase=10 ; ((((1100/20)-1)*16+2))" | bc` #超频1100MHZ
+        sed -i "554,555s:0xff:0x7ff:g" /opt/rt-n56u/trunk/linux-3.4.x/arch/mips/rt2880/init.c
+        sed -i "554,556s:0xc2:0x$clock:g" /opt/rt-n56u/trunk/linux-3.4.x/arch/mips/rt2880/init.c
         if [ ! -f configs/templates/$TNAME.config ] ; then
         echo "configs/templates/$TNAME.config not found "
         exit 1
@@ -103,6 +108,7 @@ jobs:
         echo "CONFIG_FIRMWARE_INCLUDE_ALIDDNS=n" >> .config #阿里DDNS
         echo "CONFIG_FIRMWARE_INCLUDE_SMARTDNS=n" >> .config #smartdns
         echo "CONFIG_FIRMWARE_INCLUDE_SMARTDNSBIN=n" >> .config #smartdns二进制文件
+        echo "CONFIG_FIRMWARE_INCLUDE_XRAY=y" >> .config #集成Xray执行文件
         echo "CONFIG_FIRMWARE_INCLUDE_V2RAY=y" >> .config #集成v2ray执行文件（3.8M左右)，如果不集成，会从网上下载下来执行，不影响正常使用
         echo "CONFIG_FIRMWARE_INCLUDE_TROJAN=y" >> .config #集成trojan执行文件(1.1M左右)，如果不集成，会从网上下载下来执行，不影响正常使用
         echo "CONFIG_FIRMWARE_INCLUDE_KOOLPROXY=n" >> .config #KP广告过滤
@@ -114,7 +120,6 @@ jobs:
         echo "CONFIG_FIRMWARE_INCLUDE_WYYBIN=n" >> .config #网易云解锁GO版本执行文件（4M多）注意固件超大小,不集成会自动下载
         echo "CONFIG_FIRMWARE_INCLUDE_ZEROTIER=n" >> .config #zerotier ~1.3M
         echo "CONFIG_FIRMWARE_CPU_900MHZ=y" >> configs/templates/$TNAME.config           #开启超频，仅MT7621可用
-        echo 'CONFIG_FIRMWARE_MT7621_OC="0x362"' >> .config #此处填写对应频率的十六进制：1000Mhz=0x312 1100Mhz=0x362 1120Mhz=0x372 1200Mhz=0x3B2
         fi
         #########################################################################################
         #自定义添加其它功能请参考源码configs/templates/目录下的config文件。按照上面的格式添加即可
