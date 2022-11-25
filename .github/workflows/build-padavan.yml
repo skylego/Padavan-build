@@ -43,11 +43,11 @@ jobs:
         wget -P /opt/rt-n56u/trunk/ https://raw.githubusercontent.com/skylego/Padavan/main/trunk/versions.inc
         
         #升级3.4的xray核心--exclude
-        #rm /opt/rt-n56u/trunk/user/xray/Makefile
-        #rm /opt/rt-n56u/trunk/user/xray/Xray-core-1.5.3.tar.gz
-        #rm /opt/rt-n56u/trunk/user/xray/xray
-        #wget -P /opt/rt-n56u/trunk/user/xray/ https://raw.githubusercontent.com/vb1980/Padavan-KVR/main/trunk/user/xray/Makefile
-        #wget -P /opt/rt-n56u/trunk/user/xray/ https://raw.githubusercontent.com/vb1980/Padavan-KVR/main/trunk/user/xray/Xray-core-1.6.1.tar.gz
+        rm /opt/rt-n56u/trunk/user/xray/Makefile
+        rm /opt/rt-n56u/trunk/user/xray/Xray-core-1.5.3.tar.gz
+        rm /opt/rt-n56u/trunk/user/xray/xray
+        wget -P /opt/rt-n56u/trunk/user/xray/ https://raw.githubusercontent.com/vb1980/Padavan-KVR/main/trunk/user/xray/Makefile
+        wget -P /opt/rt-n56u/trunk/user/xray/ https://raw.githubusercontent.com/vb1980/Padavan-KVR/main/trunk/user/xray/Xray-core-1.6.1.tar.gz
         fi
         cd /opt/rt-n56u/toolchain-mipsel
         sh dl_toolchain.sh
